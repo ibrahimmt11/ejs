@@ -6,7 +6,7 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    dialect: process.env.DB_DIALECT,
+    port: process.env.DB_PORT || 5432, // Menambahkan port database
+    dialect: process.env.DB_DIALECT || "postgres",
   },
-  // Anda bisa menambahkan setting untuk test dan production di sini
 };

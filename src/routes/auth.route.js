@@ -1,11 +1,23 @@
-const {
-  RegisterUser,
-  LoginUser,
-} = require("../controllers/auth.controller.js");
+const express = require("express");
+const router = express.Router();
+const authController = require("../controllers/auth.controller.js");
+const authMiddleware = require("../middlewares/auth.middleware.js");
 
-const authRoute = require("express").Router();
+// Public Routes (Bisa diakses siapa saja)
+router.post("/register", authController.register);
+router.post("/login", authController.login);
 
-authRoute.post("/register", RegisterUser);
-authRoute.post("/login", LoginUser);
+// Protected Routes (Hanya untuk yang punya Token)
+// Tambahkan authMiddleware sebelum Controller
+router.get("/me", authMiddleware, (req, res) => {
+  res.json({
+    message: "Anda berhasil mengakses data sensitif!",
+    userData: req.user, // Ini adalah data dari token (id, email)
+  });
+});
 
-module.exports = authRoute;
+// Endpoint: POST /api/users/register
+router.post("/register", authController.register);
+router.post("/login", authController.login);
+
+module.exports = router;
